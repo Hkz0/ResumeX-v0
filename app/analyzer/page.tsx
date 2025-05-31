@@ -22,6 +22,7 @@ export default function AnalyzerPage() {
   const [showResults, setShowResults] = useState(false)
   const [analysisResult, setAnalysisResult] = useState<any>(null)
   const [jobListings, setJobListings] = useState<any[]>([])
+  const [jobListingsTitle, setJobListingsTitle] = useState<string>("")
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -46,8 +47,11 @@ export default function AnalyzerPage() {
       const bestMatchTitle = analysisRes.data?.career_recommendations?.best_match?.title
       let jobs: any[] = []
       if (bestMatchTitle) {
+        setJobListingsTitle(bestMatchTitle)
         const jobMatchRes = await jobMatching(bestMatchTitle, "")
         jobs = Array.isArray(jobMatchRes.data) ? jobMatchRes.data : []
+      } else {
+        setJobListingsTitle("")
       }
       setJobListings(jobs)
       setShowResults(true)
@@ -176,7 +180,7 @@ export default function AnalyzerPage() {
             </div>
 
             <AnalysisResults result={analysisResult} />
-            <JobListings jobs={jobListings} />
+            <JobListings jobs={jobListings} jobTitle={jobListingsTitle} />
           </div>
         )}
       </div>

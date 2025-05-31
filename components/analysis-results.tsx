@@ -18,7 +18,7 @@ export function AnalysisResults({ result }: { result: any }) {
     : []
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+    <div className="grid grid-cols-1 lg:grid-cols-3 grid-rows-2 gap-4 sm:gap-6">
       {/* Match Score */}
       <Card>
         <CardHeader>
@@ -84,18 +84,18 @@ export function AnalysisResults({ result }: { result: any }) {
       </Card>
 
       {/* Suggested Improvements */}
-      <Card>
+      <Card className="lg:col-span-3">
         <CardHeader>
-          <CardTitle className="flex items-center text-lg sm:text-xl">
+          <CardTitle className="flex items-center text-xl sm:text-2xl">
             <Lightbulb className="mr-2 h-4 w-4 sm:h-5 sm:w-5 text-yellow-600" />
             Suggested Improvements
           </CardTitle>
           <CardDescription className="text-sm">AI-powered recommendations to enhance your resume</CardDescription>
         </CardHeader>
         <CardContent>
-          <ul className="space-y-2">
+          <ul className="space-y-3">
             {improvements.map((improvement: string, index: number) => (
-              <li key={index} className="text-xs sm:text-sm text-gray-700 flex items-start">
+              <li key={index} className="text-base sm:text-lg text-gray-700 flex items-start">
                 <span className="text-yellow-600 mr-2 flex-shrink-0">•</span>
                 <span>{improvement}</span>
               </li>
@@ -105,7 +105,7 @@ export function AnalysisResults({ result }: { result: any }) {
       </Card>
 
       {/* Career Recommendations */}
-      <Card className="lg:col-span-2">
+      <Card className="lg:col-span-3">
         <CardHeader>
           <CardTitle className="text-lg sm:text-xl">Career Recommendations</CardTitle>
           <CardDescription className="text-sm">

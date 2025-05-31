@@ -4,15 +4,17 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { MapPin, Calendar, Building } from "lucide-react"
 
-export function JobListings({ jobs }: { jobs: any[] }) {
+export function JobListings({ jobs, jobTitle }: { jobs: any[], jobTitle?: string }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-lg sm:text-xl">Recommended Job Listings</CardTitle>
+        <CardTitle className="text-lg sm:text-xl">
+          {jobTitle ? `Recommended Job Listings for "${jobTitle}"` : "Recommended Job Listings"}
+        </CardTitle>
         <CardDescription className="text-sm">Jobs that match your resume and skills</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6">
           {jobs.map((job, i) => (
             <Card key={i} className="hover:shadow-lg transition-shadow border-blue-100">
               <CardHeader className="pb-3">
@@ -47,10 +49,10 @@ export function JobListings({ jobs }: { jobs: any[] }) {
                       <Button
                         key={index}
                         size="sm"
-                        className={`bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-1 h-auto`}
-                        onClick={() => window.open(option.url, "_blank")}
+                        className={`bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-1 h-auto min-w-[80px]`}
+                        onClick={() => window.open(option.apply_link, "_blank")}
                       >
-                        {option.platform}
+                        {option.publisher || "Apply"}
                       </Button>
                     ))}
                   </div>
