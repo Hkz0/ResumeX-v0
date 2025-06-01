@@ -2,8 +2,8 @@
 
 import type React from "react"
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
+import { useState, useEffect } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -12,41 +12,63 @@ import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ArrowLeft } from "lucide-react"
 import { Navigation } from "@/components/navigation"
+import { login, register } from "@/app/api"
+import { MessageNotification } from "@/components/notification"
 
 export default function LoginPage() {
   const router = useRouter()
+  const searchParams = useSearchParams();
+  const initialTab = searchParams?.get("tab") === "signup" ? "signup" : "login";
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState("")
+  const [accountCreated, setAccountCreated] = useState(false)
+  const [signupSuccess, setSignupSuccess] = useState(false)
+  const [activeTab, setActiveTab] = useState(initialTab)
+
+  // React to changes in the tab query param
+  useEffect(() => {
+    setActiveTab(initialTab)
+  }, [initialTab])
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
-
-    // Simulate login
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-
-    // Set auth state in localStorage for demo
-    localStorage.setItem("isAuthenticated", "true")
-    localStorage.setItem("userEmail", "demouser")
-    localStorage.setItem("userName", "demouser")
-
-    setIsLoading(false)
-    router.push("/ranking")
+    setError("")
+    const form = e.target as HTMLFormElement
+    const username = (form.username as HTMLInputElement).value
+    const password = (form.password as HTMLInputElement).value
+    try {
+      const res = await login(username, password)
+      console.log('Login response:', res)
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('loginSuccess', '1')
+      }
+      router.push("/")
+    } catch (err: any) {
+      console.error('Login error:', err)
+      setError("Login failed. Please check your credentials.")
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
-
-    // Simulate signup
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-
-    // Set auth state in localStorage for demo
-    localStorage.setItem("isAuthenticated", "true")
-    localStorage.setItem("userEmail", "demouser")
-    localStorage.setItem("userName", "demouser")
-
-    setIsLoading(false)
-    router.push("/ranking")
+    setError("")
+    const form = e.target as HTMLFormElement
+    const username = (form["signup-username"] as HTMLInputElement).value
+    const password = (form["signup-password"] as HTMLInputElement).value
+    try {
+      await register(username, password)
+      setSignupSuccess(false)
+      setAccountCreated(true)
+      setActiveTab("login")
+    } catch (err: any) {
+      setError("Signup failed. Please try again.")
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -68,7 +90,13 @@ export default function LoginPage() {
             <CardDescription className="text-sm">Sign in with your username and password</CardDescription>
           </CardHeader>
           <CardContent>
-            <Tabs defaultValue="login" className="w-full">
+            <Tabs defaultValue={initialTab} className="w-full" value={activeTab} onValueChange={(tab) => {
+              setActiveTab(tab)
+              if (tab === "signup") {
+                setAccountCreated(false)
+                setSignupSuccess(false)
+              }
+            }}>
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="login" className="text-sm">
                   Login
@@ -79,6 +107,8 @@ export default function LoginPage() {
               </TabsList>
 
               <TabsContent value="login">
+                <MessageNotification message="Account created! Please log in." type="success" show={activeTab === "login" && accountCreated} />
+                {error && <div className="text-red-600 text-sm text-center">{error}</div>}
                 <form onSubmit={handleLogin} className="space-y-4">
                   <div>
                     <Label htmlFor="username" className="text-sm">
@@ -105,6 +135,8 @@ export default function LoginPage() {
               </TabsContent>
 
               <TabsContent value="signup">
+                <MessageNotification message="Account created! Please log in." type="success" show={activeTab === "signup" && signupSuccess} />
+                {error && <div className="text-red-600 text-sm text-center">{error}</div>}
                 <form onSubmit={handleSignup} className="space-y-4">
                   <div>
                     <Label htmlFor="signup-username" className="text-sm">

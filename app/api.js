@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'https://resumexpert-dev.onrender.com/'; // Change to your backend URL
+const API_BASE_URL = 'https://resumexpert-dev.onrender.com/'; 
 
 const api = axios.create({
   baseURL: API_BASE_URL,
-  withCredentials: true, // Needed for session-based auth
+  withCredentials: true, 
 });
 
 // Auth
