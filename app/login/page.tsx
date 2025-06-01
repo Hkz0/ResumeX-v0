@@ -35,8 +35,33 @@ export default function LoginPage() {
     setIsLoading(true)
     setError("")
     const form = e.target as HTMLFormElement
-    const username = (form.username as HTMLInputElement).value
-    const password = (form.password as HTMLInputElement).value
+    let username = (form.username as HTMLInputElement).value
+    let password = (form.password as HTMLInputElement).value
+    // Sanitize inputs
+    username = username.trim().normalize('NFC');
+    password = password.trim().normalize('NFC');
+    // Input validation
+    const allowedPattern = /^[a-zA-Z0-9_.@#%-]+$/;
+    if (username.length < 5) {
+      setError("Username must be at least 5 characters.");
+      setIsLoading(false);
+      return;
+    }
+    if (!allowedPattern.test(username)) {
+      setError("Username contains invalid characters. Only letters, numbers, underscore, dash, dot, and @#% are allowed.");
+      setIsLoading(false);
+      return;
+    }
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters.");
+      setIsLoading(false);
+      return;
+    }
+    if (!allowedPattern.test(password)) {
+      setError("Password contains invalid characters. Only letters, numbers, underscore, dash, dot, and @#% are allowed.");
+      setIsLoading(false);
+      return;
+    }
     try {
       const res = await login(username, password)
       console.log('Login response:', res)
@@ -57,8 +82,33 @@ export default function LoginPage() {
     setIsLoading(true)
     setError("")
     const form = e.target as HTMLFormElement
-    const username = (form["signup-username"] as HTMLInputElement).value
-    const password = (form["signup-password"] as HTMLInputElement).value
+    let username = (form["signup-username"] as HTMLInputElement).value
+    let password = (form["signup-password"] as HTMLInputElement).value
+    // Sanitize inputs
+    username = username.trim().normalize('NFC');
+    password = password.trim().normalize('NFC');
+    // Input validation
+    const allowedPattern = /^[a-zA-Z0-9_.@#%-]+$/;
+    if (username.length < 5) {
+      setError("Username must be at least 5 characters.");
+      setIsLoading(false);
+      return;
+    }
+    if (!allowedPattern.test(username)) {
+      setError("Username contains invalid characters. Only letters, numbers, underscore, dash, dot, and @#% are allowed.");
+      setIsLoading(false);
+      return;
+    }
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters.");
+      setIsLoading(false);
+      return;
+    }
+    if (!allowedPattern.test(password)) {
+      setError("Password contains invalid characters. Only letters, numbers, underscore, dash, dot, and @#% are allowed.");
+      setIsLoading(false);
+      return;
+    }
     try {
       await register(username, password)
       setSignupSuccess(false)
