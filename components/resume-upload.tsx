@@ -18,6 +18,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { rankResumes } from "@/app/api"
 
 interface ResumeFile {
   id: string
@@ -54,49 +55,16 @@ export function ResumeUpload({ jobId, onComplete, onCancel }: ResumeUploadProps)
 
   const handleProcessResumes = async () => {
     if (resumes.length === 0) return
-
     setIsProcessing(true)
-
-    // Simulate processing each resume
-    for (let i = 0; i < resumes.length; i++) {
-      setResumes((prev) => prev.map((resume, index) => (index === i ? { ...resume, status: "processing" } : resume)))
-
-      await new Promise((resolve) => setTimeout(resolve, 1500))
-
-      setResumes((prev) => prev.map((resume, index) => (index === i ? { ...resume, status: "completed" } : resume)))
+    try {
+      const files = resumes.map((resume) => resume.file)
+      await rankResumes(jobId, files)
+      setIsProcessing(false)
+      onComplete()
+    } catch (err) {
+      setIsProcessing(false)
+      alert("Failed to rank resumes. Please try again.")
     }
-
-    // Generate ranking results with AI-detected candidate names
-    const candidateNames = [
-      "John Smith",
-      "Sarah Johnson",
-      "Michael Chen",
-      "Emily Davis",
-      "David Wilson",
-      "Jessica Brown",
-      "Robert Taylor",
-      "Amanda Garcia",
-      "Christopher Lee",
-      "Maria Rodriguez",
-    ]
-
-    const rankings = resumes.map((resume, index) => ({
-      id: resume.id,
-      candidateName: candidateNames[index % candidateNames.length] || `Candidate ${index + 1}`,
-      score: Math.floor(Math.random() * 40) + 60, // Random score between 60-100
-      summary: `Strong candidate with relevant experience. ${Math.random() > 0.5 ? "Excellent technical skills and proven track record." : "Good cultural fit with leadership potential."}`,
-      filename: resume.file.name,
-      createdDate: new Date().toISOString(),
-    }))
-
-    // Sort by score (highest first)
-    rankings.sort((a, b) => b.score - a.score)
-
-    // Save rankings to localStorage
-    localStorage.setItem(`rankings_${jobId}`, JSON.stringify(rankings))
-
-    setIsProcessing(false)
-    onComplete()
   }
 
   return (

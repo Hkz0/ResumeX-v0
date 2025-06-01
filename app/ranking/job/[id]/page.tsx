@@ -9,6 +9,7 @@ import { ArrowLeft, Upload, Users, FileText } from "lucide-react"
 import { ResumeUpload } from "@/components/resume-upload"
 import { RankingResults } from "@/components/ranking-results"
 import { Navigation } from "@/components/navigation"
+import { getJobs } from "@/app/api"
 
 interface Job {
   id: string
@@ -23,40 +24,34 @@ export default function JobDetailPage() {
   const router = useRouter()
   const [job, setJob] = useState<Job | null>(null)
   const [showUpload, setShowUpload] = useState(false)
-  const [showResults, setShowResults] = useState(false)
+  const [showResults, setShowResults] = useState(true)
 
   useEffect(() => {
-    // Get job from localStorage
-    const jobs = JSON.parse(localStorage.getItem("jobs") || "[]")
-    const currentJob = jobs.find((j: Job) => j.id === params.id)
-
-    if (currentJob) {
-      setJob(currentJob)
-      // Check if there are already ranked resumes
-      const rankings = JSON.parse(localStorage.getItem(`rankings_${params.id}`) || "[]")
-      if (rankings.length > 0) {
-        setShowResults(true)
-      }
-    } else {
-      router.push("/ranking")
-    }
+    getJobs()
+      .then((res) => {
+        const jobs = Array.isArray(res.data?.jobs)
+          ? res.data.jobs.map((job: any) => ({
+              id: job.id,
+              title: job.title,
+              description: job.description,
+              createdDate: job.created_at,
+              totalResumes: job.rankings_count || 0,
+            }))
+          : [];
+        const currentJob = jobs.find((j: Job) => String(j.id) === String(params.id))
+        if (currentJob) {
+          setJob(currentJob)
+        } else {
+          router.push("/ranking")
+        }
+      })
+      .catch(() => router.push("/ranking"))
   }, [params.id, router])
 
   const handleUploadComplete = () => {
     setShowUpload(false)
     setShowResults(true)
-
-    // Update job's total resumes count
-    if (job) {
-      const jobs = JSON.parse(localStorage.getItem("jobs") || "[]")
-      const updatedJobs = jobs.map((j: Job) =>
-        j.id === job.id
-          ? { ...j, totalResumes: JSON.parse(localStorage.getItem(`rankings_${job.id}`) || "[]").length }
-          : j,
-      )
-      localStorage.setItem("jobs", JSON.stringify(updatedJobs))
-      setJob({ ...job, totalResumes: JSON.parse(localStorage.getItem(`rankings_${job.id}`) || "[]").length })
-    }
+    // Optionally, refetch job details or rankings from backend here
   }
 
   if (!job) {
@@ -117,40 +112,15 @@ export default function JobDetailPage() {
         </Card>
 
         {/* Upload/Results Section */}
-        {!showUpload && !showResults && (
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg sm:text-xl">Upload Resumes for Ranking</CardTitle>
-              <CardDescription className="text-sm">
-                Upload multiple resumes to rank them against this job position
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="text-center py-8">
-                <Upload className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-gray-400 mb-4" />
-                <p className="text-gray-600 mb-6 text-sm sm:text-base">
-                  Start by uploading resumes to rank against this position
-                </p>
-                <Button onClick={() => setShowUpload(true)} className="bg-blue-600 hover:bg-blue-700">
-                  <Upload className="mr-2 h-4 w-4" />
-                  Upload Resumes
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        )}
-
-        {showUpload && (
+        {showUpload ? (
           <ResumeUpload jobId={job.id} onComplete={handleUploadComplete} onCancel={() => setShowUpload(false)} />
-        )}
-
-        {showResults && (
+        ) : (
           <div className="space-y-6">
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
               <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Ranking Results</h2>
               <Button onClick={() => setShowUpload(true)} variant="outline" className="w-full sm:w-auto">
                 <Upload className="mr-2 h-4 w-4" />
-                Upload More Resumes
+                Upload Resumes
               </Button>
             </div>
             <RankingResults jobId={job.id} />

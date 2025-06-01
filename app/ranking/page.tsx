@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { ArrowLeft, Plus } from "lucide-react"
 import { JobList } from "@/components/job-list"
 import { Navigation } from "@/components/navigation"
+import { checkSession } from "@/app/api"
 
 export default function RankingPage() {
   const router = useRouter()
@@ -15,12 +16,16 @@ export default function RankingPage() {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    // Check authentication status
-    const authStatus = localStorage.getItem("isAuthenticated")
-    if (authStatus === "true") {
-      setIsAuthenticated(true)
-    }
-    setIsLoading(false)
+    checkSession()
+      .then((res) => {
+        if (res?.data?.username) {
+          setIsAuthenticated(true)
+        } else {
+          setIsAuthenticated(false)
+        }
+      })
+      .catch(() => setIsAuthenticated(false))
+      .finally(() => setIsLoading(false))
   }, [])
 
   if (isLoading) {

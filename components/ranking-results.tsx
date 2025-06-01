@@ -16,6 +16,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { getJobRankings, deleteRanking } from "@/app/api"
 
 interface RankingResult {
   id: string
@@ -34,22 +35,30 @@ export function RankingResults({ jobId }: RankingResultsProps) {
   const [rankings, setRankings] = useState<RankingResult[]>([])
 
   useEffect(() => {
-    // Load rankings from localStorage
-    const savedRankings = JSON.parse(localStorage.getItem(`rankings_${jobId}`) || "[]")
-    setRankings(savedRankings)
+    getJobRankings(jobId)
+      .then((res) => {
+        const rankings = Array.isArray(res.data?.rankings)
+          ? res.data.rankings.map((r: any) => ({
+              id: r.id,
+              candidateName: r.candidate_name,
+              score: r.score,
+              summary: r.summary,
+              filename: r.filename,
+              createdDate: r.created_at,
+            }))
+          : [];
+        setRankings(rankings)
+      })
+      .catch(() => setRankings([]))
   }, [jobId])
 
-  const handleDeleteRanking = (rankingId: string, candidateName: string) => {
-    const updatedRankings = rankings.filter((ranking) => ranking.id !== rankingId)
-    setRankings(updatedRankings)
-    localStorage.setItem(`rankings_${jobId}`, JSON.stringify(updatedRankings))
-
-    // Update job's total resumes count
-    const jobs = JSON.parse(localStorage.getItem("jobs") || "[]")
-    const updatedJobs = jobs.map((job: any) =>
-      job.id === jobId ? { ...job, totalResumes: updatedRankings.length } : job,
-    )
-    localStorage.setItem("jobs", JSON.stringify(updatedJobs))
+  const handleDeleteRanking = async (rankingId: string, candidateName: string) => {
+    try {
+      await deleteRanking(jobId, rankingId)
+      setRankings((prev) => prev.filter((ranking) => ranking.id !== rankingId))
+    } catch (err) {
+      alert('Failed to delete ranking. Please try again.')
+    }
   }
 
   const getRankIcon = (index: number) => {

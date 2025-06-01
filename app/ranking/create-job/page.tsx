@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { ArrowLeft } from "lucide-react"
 import { Navigation } from "@/components/navigation"
+import { createJob } from "@/app/api"
 
 export default function CreateJobPage() {
   const router = useRouter()
@@ -24,27 +25,15 @@ export default function CreateJobPage() {
     if (!jobTitle.trim() || !jobDescription.trim()) return
 
     setIsCreating(true)
-
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-
-    // Get existing jobs from localStorage
-    const existingJobs = JSON.parse(localStorage.getItem("jobs") || "[]")
-
-    // Create new job
-    const newJob = {
-      id: Date.now().toString(),
-      title: jobTitle.trim(),
-      description: jobDescription.trim(),
-      createdDate: new Date().toISOString(),
-      totalResumes: 0,
+    try {
+      await createJob(jobTitle.trim(), jobDescription.trim())
+      router.push("/ranking")
+    } catch (err) {
+      // Optionally show error notification
+      alert("Failed to create job. Please try again.")
+    } finally {
+      setIsCreating(false)
     }
-
-    // Save to localStorage
-    localStorage.setItem("jobs", JSON.stringify([...existingJobs, newJob]))
-
-    setIsCreating(false)
-    router.push("/ranking")
   }
 
   return (

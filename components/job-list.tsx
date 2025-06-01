@@ -17,6 +17,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { getJobs, deleteJob } from "@/app/api"
 
 interface Job {
   id: string
@@ -30,18 +31,29 @@ export function JobList() {
   const [jobs, setJobs] = useState<Job[]>([])
 
   useEffect(() => {
-    // Load jobs from localStorage
-    const savedJobs = JSON.parse(localStorage.getItem("jobs") || "[]")
-    setJobs(savedJobs)
+    getJobs()
+      .then((res) => {
+        const jobs = Array.isArray(res.data?.jobs)
+          ? res.data.jobs.map((job: any) => ({
+              id: job.id,
+              title: job.title,
+              description: job.description,
+              createdDate: job.created_at,
+              totalResumes: job.rankings_count || 0,
+            }))
+          : [];
+        setJobs(jobs)
+      })
+      .catch(() => setJobs([]))
   }, [])
 
-  const handleDeleteJob = (jobId: string, jobTitle: string) => {
-    const updatedJobs = jobs.filter((job) => job.id !== jobId)
-    setJobs(updatedJobs)
-    localStorage.setItem("jobs", JSON.stringify(updatedJobs))
-
-    // Also remove associated rankings
-    localStorage.removeItem(`rankings_${jobId}`)
+  const handleDeleteJob = async (jobId: string, jobTitle: string) => {
+    try {
+      await deleteJob(jobId)
+      setJobs((prev) => prev.filter((job) => job.id !== jobId))
+    } catch (err) {
+      alert('Failed to delete job. Please try again.')
+    }
   }
 
   if (jobs.length === 0) {
