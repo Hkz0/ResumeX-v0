@@ -73,7 +73,7 @@ export function Navigation({ currentPage }: NavigationProps) {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
               <Link href="/" className="flex items-center">
-                <FileText className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />
+                <img src="/ResumeXpert.png" alt="ResumeXpert Logo" className="h-10 w-10" style={{ maxHeight: 40 }} />
                 <span className="ml-2 text-lg sm:text-xl font-bold text-gray-900">ResumeXpert</span>
               </Link>
             </div>

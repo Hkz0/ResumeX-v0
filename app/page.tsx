@@ -14,8 +14,12 @@ export default function HomePage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
         <div className="text-center">
           <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold text-gray-900 mb-4 sm:mb-6">
-            AI-Powered Resume
-            <span className="text-blue-600"> Analysis</span>
+            AI-Powered Resume 
+            <span
+              className="ml-2 bg-blue-gradient bg-clip-text text-transparent animate-gradient-x bg-[length:200%_200%]"
+            >
+              Analysis
+            </span>
           </h1>
           <p className="text-lg sm:text-xl text-gray-600 mb-6 sm:mb-8 max-w-3xl mx-auto px-4">
             Get instant feedback on your resume, discover missing keywords, and find the perfect job matches with our

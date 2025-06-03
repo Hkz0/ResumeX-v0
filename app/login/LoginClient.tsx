@@ -130,6 +130,11 @@ export default function LoginClient() {
 
         <Card>
           <CardHeader className="text-center">
+            <img
+              src="/favicon.png"
+              alt="ResumeXpert Logo"
+              className="mx-auto mb-2 w-32 h-32"
+            />
             <CardTitle className="text-lg sm:text-xl">Welcome to ResumeXpert</CardTitle>
             <CardDescription className="text-sm">Sign in with your username and password</CardDescription>
           </CardHeader>

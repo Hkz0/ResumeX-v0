@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { Footer } from "@/components/footer"
+import { ApiStatusGate } from "@/components/ApiStatusGate"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -19,8 +20,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/favicon.png" />
+      </head>
       <body className={`${inter.className} min-h-screen flex flex-col`}>
-        {children}
+        <ApiStatusGate>
+          {children}
+        </ApiStatusGate>
         <Footer />
       </body>
     </html>
