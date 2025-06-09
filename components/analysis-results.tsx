@@ -129,6 +129,29 @@ export function AnalysisResults({ result }: { result: any }) {
           </div>
         </CardContent>
       </Card>
+
+      {/* Feedback Card */}
+      <Card className="lg:col-span-3">
+        <CardHeader>
+          <CardTitle className="text-lg sm:text-xl">We Value Your Feedback</CardTitle>
+          <CardDescription className="text-sm">
+            Help us improve ResumeXpert by sharing your thoughts!
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-col items-center">
+            <a
+              href="https://forms.gle/3FhDZPmULh6nCVDS6"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full max-w-md inline-block px-6 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors text-sm sm:text-base text-center"
+            >
+              Give Feedback
+            </a>
+            <p className="mt-2 text-xs text-gray-500">Your feedback helps us make ResumeXpert better for everyone.</p>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }

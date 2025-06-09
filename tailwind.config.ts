@@ -88,14 +88,19 @@ const config: Config = {
   				'0%, 100%': { 'backgroundPosition': '0% 50%' },
   				'50%': { 'backgroundPosition': '100% 50%' },
   			},
+  			'gradient-x-slow': {
+  				'0%': { 'backgroundPosition': '0% 50%' },
+  				'100%': { 'backgroundPosition': '100% 50%' },
+  			},
   		},
   		animation: {
   			'accordion-down': 'accordion-down 0.2s ease-out',
   			'accordion-up': 'accordion-up 0.2s ease-out',
   			'gradient-x': 'gradient-x 3s ease infinite',
+  			'gradient-x-slow': 'gradient-x-slow 4s ease infinite',
   		},
   		backgroundImage: {
-  			'blue-gradient': 'linear-gradient(90deg, #3b82f6, #2563eb, #60a5fa, #3b82f6)',
+  			'blue-gradient': 'repeating-linear-gradient(90deg, #3b82f6 0%, #2563eb 25%, #60a5fa 50%, #3b82f6 75%, #2563eb 100%)',
   		},
   		backgroundSize: {
   			'200': '200% 200%',

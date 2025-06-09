@@ -86,6 +86,14 @@ export function Navigation({ currentPage }: NavigationProps) {
               <Link href="/ranking">
                 <Button variant={currentPage === "ranking" ? "default" : "ghost"}>Ranking</Button>
               </Link>
+              <a
+                href="https://forms.gle/3FhDZPmULh6nCVDS6"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ml-2"
+              >
+                <Button variant="ghost">Feedback</Button>
+              </a>
 
               {isAuthenticated ? (
                 <DropdownMenu>
@@ -141,6 +149,13 @@ export function Navigation({ currentPage }: NavigationProps) {
                         Ranking
                       </Button>
                     </Link>
+                    <a
+                      href="https://forms.gle/3FhDZPmULh6nCVDS6"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Button variant="ghost" className="w-full justify-start">Feedback</Button>
+                    </a>
 
                     <div className="border-t pt-4">
                       {isAuthenticated ? (

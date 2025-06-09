@@ -16,7 +16,7 @@ export default function HomePage() {
           <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold text-gray-900 mb-4 sm:mb-6">
             AI-Powered Resume 
             <span
-              className="ml-2 bg-blue-gradient bg-clip-text text-transparent animate-gradient-x bg-[length:200%_200%]"
+              className="ml-2 bg-blue-gradient bg-clip-text text-transparent animate-gradient-x-slow bg-[length:400%_100%]"
             >
               Analysis
             </span>

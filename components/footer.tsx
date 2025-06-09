@@ -31,6 +31,14 @@ export function Footer() {
               <Link href="/ranking" className="text-sm text-gray-500 hover:text-blue-600">
                 Resume Ranking
               </Link>
+              <a
+                href="https://forms.gle/3FhDZPmULh6nCVDS6"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-gray-500 hover:text-blue-600"
+              >
+                Feedback
+              </a>
               <Link href="#" className="text-sm text-gray-500 hover:text-blue-600">
                 About Us
               </Link>
@@ -41,17 +49,9 @@ export function Footer() {
           <div className="flex flex-col">
             <h3 className="text-sm font-semibold text-gray-900 mb-3">Connect With Us</h3>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-blue-600">
+              <a href="https://github.com/Hkz0/ResumeXpert-dev" className="text-gray-400 hover:text-blue-600">
                 <Github className="h-5 w-5" />
                 <span className="sr-only">GitHub</span>
-              </a>
-              <a href="#" className="text-gray-400 hover:text-blue-600">
-                <Linkedin className="h-5 w-5" />
-                <span className="sr-only">LinkedIn</span>
-              </a>
-              <a href="#" className="text-gray-400 hover:text-blue-600">
-                <Twitter className="h-5 w-5" />
-                <span className="sr-only">Twitter</span>
               </a>
               <a href="mailto:contact@resumexpert.com" className="text-gray-400 hover:text-blue-600">
                 <Mail className="h-5 w-5" />
