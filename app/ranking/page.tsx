@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { ArrowLeft, Plus } from "lucide-react"
 import { JobList } from "@/components/job-list"
 import { Navigation } from "@/components/navigation"
+import { ScrollAnimation } from "@/components/scroll-animation"
 import { checkSession } from "@/app/api"
 
 export default function RankingPage() {
@@ -43,31 +44,35 @@ export default function RankingPage() {
         <Navigation currentPage="ranking" />
 
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="mb-6">
-            <Link href="/" className="inline-flex items-center text-blue-600 hover:text-blue-800">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Home
-            </Link>
-          </div>
+          <ScrollAnimation direction="up">
+            <div className="mb-6">
+              <Link href="/" className="inline-flex items-center text-blue-600 hover:text-blue-800">
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Back to Home
+              </Link>
+            </div>
+          </ScrollAnimation>
 
-          <div className="text-center">
-            <Card className="bg-blue-50 border-blue-200">
-              <CardHeader>
-                <CardTitle className="text-blue-800">Authentication Required</CardTitle>
-                <CardDescription>Please sign in to access the ranking features</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="py-8">
-                  <p className="text-blue-700 mb-6">
-                    The ranking feature allows you to create job positions and rank multiple resumes against them.
-                  </p>
-                  <Link href="/login">
-                    <Button className="bg-blue-600 hover:bg-blue-700">Sign In to Continue</Button>
-                  </Link>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+          <ScrollAnimation direction="up" delay={0.2}>
+            <div className="text-center">
+              <Card className="bg-blue-50 border-blue-200">
+                <CardHeader>
+                  <CardTitle className="text-blue-800">Authentication Required</CardTitle>
+                  <CardDescription>Please sign in to access the ranking features</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="py-8">
+                    <p className="text-blue-700 mb-6">
+                      The ranking feature allows you to create job positions and rank multiple resumes against them.
+                    </p>
+                    <Link href="/login">
+                      <Button className="bg-blue-600 hover:bg-blue-700">Sign In to Continue</Button>
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </ScrollAnimation>
         </div>
       </div>
     )
@@ -79,27 +84,33 @@ export default function RankingPage() {
       <Navigation currentPage="ranking" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-6">
-          <Link href="/" className="inline-flex items-center text-blue-600 hover:text-blue-800">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Home
-          </Link>
-        </div>
-
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">Resume Ranking</h1>
-            <p className="text-gray-600">Manage job positions and rank resumes</p>
+        <ScrollAnimation direction="up">
+          <div className="mb-6">
+            <Link href="/" className="inline-flex items-center text-blue-600 hover:text-blue-800">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Home
+            </Link>
           </div>
-          <Link href="/ranking/create-job">
-            <Button className="bg-blue-600 hover:bg-blue-700">
-              <Plus className="mr-2 h-4 w-4" />
-              Create Job Position
-            </Button>
-          </Link>
-        </div>
+        </ScrollAnimation>
 
-        <JobList />
+        <ScrollAnimation direction="up" delay={0.2}>
+          <div className="flex justify-between items-center mb-8">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">Resume Ranking</h1>
+              <p className="text-gray-600">Manage job positions and rank resumes</p>
+            </div>
+            <Link href="/ranking/create-job">
+              <Button className="bg-blue-600 hover:bg-blue-700">
+                <Plus className="mr-2 h-4 w-4" />
+                Create Job Position
+              </Button>
+            </Link>
+          </div>
+        </ScrollAnimation>
+
+        <ScrollAnimation direction="up" delay={0.4}>
+          <JobList />
+        </ScrollAnimation>
       </div>
     </div>
   )

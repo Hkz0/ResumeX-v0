@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft } from "lucide-react";
 import { Navigation } from "@/components/navigation";
+import { ScrollAnimation } from "@/components/scroll-animation";
 import { login, register } from "@/app/api";
 import { MessageNotification } from "@/components/notification";
 
@@ -121,104 +122,108 @@ export default function LoginClient() {
       <Navigation />
 
       <div className="max-w-md mx-auto px-4 py-8 sm:py-16">
-        <div className="mb-4 sm:mb-6">
-          <Link href="/" className="inline-flex items-center text-blue-600 hover:text-blue-800 text-sm sm:text-base">
-            <ArrowLeft className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
-            Back to Home
-          </Link>
-        </div>
+        <ScrollAnimation direction="up">
+          <div className="mb-4 sm:mb-6">
+            <Link href="/" className="inline-flex items-center text-blue-600 hover:text-blue-800 text-sm sm:text-base">
+              <ArrowLeft className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+              Back to Home
+            </Link>
+          </div>
+        </ScrollAnimation>
 
-        <Card>
-          <CardHeader className="text-center">
-            <img
-              src="/favicon.png"
-              alt="ResumeXpert Logo"
-              className="mx-auto mb-2 w-32 h-32"
-            />
-            <CardTitle className="text-lg sm:text-xl">Welcome to ResumeXpert</CardTitle>
-            <CardDescription className="text-sm">Sign in with your username and password</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Tabs defaultValue={initialTab} className="w-full" value={activeTab} onValueChange={(tab) => {
-              setActiveTab(tab);
-              if (tab === "signup") {
-                setAccountCreated(false);
-                setSignupSuccess(false);
-              }
-            }}>
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="login" className="text-sm">
-                  Login
-                </TabsTrigger>
-                <TabsTrigger value="signup" className="text-sm">
-                  Sign Up
-                </TabsTrigger>
-              </TabsList>
+        <ScrollAnimation direction="up" delay={0.2}>
+          <Card>
+            <CardHeader className="text-center">
+              <img
+                src="/favicon.png"
+                alt="ResumeXpert Logo"
+                className="mx-auto mb-2 w-32 h-32"
+              />
+              <CardTitle className="text-lg sm:text-xl">Welcome to ResumeXpert</CardTitle>
+              <CardDescription className="text-sm">Sign in with your username and password</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Tabs defaultValue={initialTab} className="w-full" value={activeTab} onValueChange={(tab) => {
+                setActiveTab(tab);
+                if (tab === "signup") {
+                  setAccountCreated(false);
+                  setSignupSuccess(false);
+                }
+              }}>
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="login" className="text-sm">
+                    Login
+                  </TabsTrigger>
+                  <TabsTrigger value="signup" className="text-sm">
+                    Sign Up
+                  </TabsTrigger>
+                </TabsList>
 
-              <TabsContent value="login">
-                <MessageNotification message="Account created! Please log in." type="success" show={activeTab === "login" && accountCreated} />
-                {error && <div className="text-red-600 text-sm text-center">{error}</div>}
-                <form onSubmit={handleLogin} className="space-y-4">
-                  <div>
-                    <Label htmlFor="username" className="text-sm">
-                      Username
-                    </Label>
-                    <Input id="username" type="text" placeholder="Enter your username" required className="text-sm" />
-                  </div>
-                  <div>
-                    <Label htmlFor="password" className="text-sm">
-                      Password
-                    </Label>
-                    <Input
-                      id="password"
-                      type="password"
-                      placeholder="Enter your password"
-                      required
-                      className="text-sm"
-                    />
-                  </div>
-                  <Button type="submit" className="w-full" disabled={isLoading}>
-                    {isLoading ? "Signing in..." : "Sign In"}
-                  </Button>
-                </form>
-              </TabsContent>
+                <TabsContent value="login">
+                  <MessageNotification message="Account created! Please log in." type="success" show={activeTab === "login" && accountCreated} />
+                  {error && <div className="text-red-600 text-sm text-center">{error}</div>}
+                  <form onSubmit={handleLogin} className="space-y-4">
+                    <div>
+                      <Label htmlFor="username" className="text-sm">
+                        Username
+                      </Label>
+                      <Input id="username" type="text" placeholder="Enter your username" required className="text-sm" />
+                    </div>
+                    <div>
+                      <Label htmlFor="password" className="text-sm">
+                        Password
+                      </Label>
+                      <Input
+                        id="password"
+                        type="password"
+                        placeholder="Enter your password"
+                        required
+                        className="text-sm"
+                      />
+                    </div>
+                    <Button type="submit" className="w-full" disabled={isLoading}>
+                      {isLoading ? "Signing in..." : "Sign In"}
+                    </Button>
+                  </form>
+                </TabsContent>
 
-              <TabsContent value="signup">
-                <MessageNotification message="Account created! Please log in." type="success" show={activeTab === "signup" && signupSuccess} />
-                {error && <div className="text-red-600 text-sm text-center">{error}</div>}
-                <form onSubmit={handleSignup} className="space-y-4">
-                  <div>
-                    <Label htmlFor="signup-username" className="text-sm">
-                      Username
-                    </Label>
-                    <Input
-                      id="signup-username"
-                      type="text"
-                      placeholder="Choose a username"
-                      required
-                      className="text-sm"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="signup-password" className="text-sm">
-                      Password
-                    </Label>
-                    <Input
-                      id="signup-password"
-                      type="password"
-                      placeholder="Create a password"
-                      required
-                      className="text-sm"
-                    />
-                  </div>
-                  <Button type="submit" className="w-full" disabled={isLoading}>
-                    {isLoading ? "Creating account..." : "Create Account"}
-                  </Button>
-                </form>
-              </TabsContent>
-            </Tabs>
-          </CardContent>
-        </Card>
+                <TabsContent value="signup">
+                  <MessageNotification message="Account created! Please log in." type="success" show={activeTab === "signup" && signupSuccess} />
+                  {error && <div className="text-red-600 text-sm text-center">{error}</div>}
+                  <form onSubmit={handleSignup} className="space-y-4">
+                    <div>
+                      <Label htmlFor="signup-username" className="text-sm">
+                        Username
+                      </Label>
+                      <Input
+                        id="signup-username"
+                        type="text"
+                        placeholder="Choose a username"
+                        required
+                        className="text-sm"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="signup-password" className="text-sm">
+                        Password
+                      </Label>
+                      <Input
+                        id="signup-password"
+                        type="password"
+                        placeholder="Choose a password"
+                        required
+                        className="text-sm"
+                      />
+                    </div>
+                    <Button type="submit" className="w-full" disabled={isLoading}>
+                      {isLoading ? "Creating account..." : "Create Account"}
+                    </Button>
+                  </form>
+                </TabsContent>
+              </Tabs>
+            </CardContent>
+          </Card>
+        </ScrollAnimation>
       </div>
     </div>
   );

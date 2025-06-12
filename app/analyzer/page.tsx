@@ -13,6 +13,7 @@ import { FileText, Upload, ArrowLeft } from "lucide-react"
 import { AnalysisResults } from "@/components/analysis-results"
 import { JobListings } from "@/components/job-listings"
 import { Navigation } from "@/components/navigation"
+import { ScrollAnimation } from "@/components/scroll-animation"
 import { uploadResume, analyze, jobMatching } from "@/app/api"
 
 export default function AnalyzerPage() {
@@ -68,80 +69,86 @@ export default function AnalyzerPage() {
       <Navigation currentPage="analyzer" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-        <div className="mb-4 sm:mb-6">
-          <Link href="/" className="inline-flex items-center text-blue-600 hover:text-blue-800 text-sm sm:text-base">
-            <ArrowLeft className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
-            Back to Home
-          </Link>
-        </div>
+        <ScrollAnimation direction="up">
+          <div className="mb-4 sm:mb-6">
+            <Link href="/" className="inline-flex items-center text-blue-600 hover:text-blue-800 text-sm sm:text-base">
+              <ArrowLeft className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+              Back to Home
+            </Link>
+          </div>
+        </ScrollAnimation>
 
         {!showResults ? (
           <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-6 sm:mb-8">
+            <ScrollAnimation direction="up" className="text-center mb-6 sm:mb-8">
               <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 sm:mb-4">Resume Analyzer</h1>
               <p className="text-gray-600 text-sm sm:text-base px-4">
                 Upload your resume and paste the job description to get AI-powered analysis
               </p>
-            </div>
+            </ScrollAnimation>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
               {/* Resume Upload */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg sm:text-xl">Upload Resume</CardTitle>
-                  <CardDescription className="text-sm">Upload your resume in PDF format</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 sm:p-6 text-center hover:border-blue-400 transition-colors">
-                    <input
-                      type="file"
-                      accept=".pdf"
-                      onChange={handleFileUpload}
-                      className="hidden"
-                      id="resume-upload"
-                    />
-                    <label htmlFor="resume-upload" className="cursor-pointer">
-                      <Upload className="mx-auto h-8 w-8 sm:h-12 sm:w-12 text-gray-400 mb-3 sm:mb-4" />
-                      <p className="text-sm text-gray-600 mb-2 px-2">
-                        {resumeFile ? resumeFile.name : "Click to upload or drag and drop"}
-                      </p>
-                      <p className="text-xs text-gray-500">PDF files only</p>
-                    </label>
-                  </div>
-                  {resumeFile && (
-                    <div className="mt-4 p-3 bg-green-50 rounded-lg">
-                      <p className="text-sm text-green-800 flex items-center">
-                        <FileText className="mr-2 h-4 w-4 flex-shrink-0" />
-                        <span className="truncate">{resumeFile.name} uploaded successfully</span>
-                      </p>
+              <ScrollAnimation direction="left" delay={0.2}>
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg sm:text-xl">Upload Resume</CardTitle>
+                    <CardDescription className="text-sm">Upload your resume in PDF format</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 sm:p-6 text-center hover:border-blue-400 transition-colors">
+                      <input
+                        type="file"
+                        accept=".pdf"
+                        onChange={handleFileUpload}
+                        className="hidden"
+                        id="resume-upload"
+                      />
+                      <label htmlFor="resume-upload" className="cursor-pointer">
+                        <Upload className="mx-auto h-8 w-8 sm:h-12 sm:w-12 text-gray-400 mb-3 sm:mb-4" />
+                        <p className="text-sm text-gray-600 mb-2 px-2">
+                          {resumeFile ? resumeFile.name : "Click to upload or drag and drop"}
+                        </p>
+                        <p className="text-xs text-gray-500">PDF files only</p>
+                      </label>
                     </div>
-                  )}
-                </CardContent>
-              </Card>
+                    {resumeFile && (
+                      <div className="mt-4 p-3 bg-green-50 rounded-lg">
+                        <p className="text-sm text-green-800 flex items-center">
+                          <FileText className="mr-2 h-4 w-4 flex-shrink-0" />
+                          <span className="truncate">{resumeFile.name} uploaded successfully</span>
+                        </p>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </ScrollAnimation>
 
               {/* Job Description */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg sm:text-xl">Job Description</CardTitle>
-                  <CardDescription className="text-sm">
-                    Paste the job description you want to match against
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Label htmlFor="job-description">Job Description</Label>
-                  <Textarea
-                    id="job-description"
-                    placeholder="Paste the complete job description here..."
-                    value={jobDescription}
-                    onChange={(e) => setJobDescription(e.target.value)}
-                    className="mt-2 min-h-[150px] sm:min-h-[200px] text-sm"
-                  />
-                  <p className="text-xs text-gray-500 mt-2">{jobDescription.length} characters</p>
-                </CardContent>
-              </Card>
+              <ScrollAnimation direction="right" delay={0.4}>
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg sm:text-xl">Job Description</CardTitle>
+                    <CardDescription className="text-sm">
+                      Paste the job description you want to match against
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <Label htmlFor="job-description">Job Description</Label>
+                    <Textarea
+                      id="job-description"
+                      placeholder="Paste the complete job description here..."
+                      value={jobDescription}
+                      onChange={(e) => setJobDescription(e.target.value)}
+                      className="mt-2 min-h-[150px] sm:min-h-[200px] text-sm"
+                    />
+                    <p className="text-xs text-gray-500 mt-2">{jobDescription.length} characters</p>
+                  </CardContent>
+                </Card>
+              </ScrollAnimation>
             </div>
 
-            <div className="text-center mt-6 sm:mt-8 px-4">
+            <ScrollAnimation direction="up" delay={0.6} className="text-center mt-6 sm:mt-8 px-4">
               <Button
                 onClick={handleAnalyze}
                 disabled={!resumeFile || !jobDescription.trim() || isAnalyzing}
@@ -157,30 +164,36 @@ export default function AnalyzerPage() {
                   "Analyze Resume"
                 )}
               </Button>
-            </div>
+            </ScrollAnimation>
 
             {isAnalyzing && (
-              <Card className="mt-6 sm:mt-8">
-                <CardContent className="pt-6">
-                  <div className="text-center">
-                    <p className="text-sm text-gray-600 mb-4">AI is analyzing your resume...</p>
-                    <Progress value={66} className="w-full" />
-                  </div>
-                </CardContent>
-              </Card>
+              <div className="fixed inset-0 bg-gray-50/80 backdrop-blur-sm z-50">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center">
+                  <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mb-6"></div>
+                  <div className="text-lg font-semibold text-gray-700 mb-2">Analyzing Resume</div>
+                  <div className="text-sm text-gray-500">Our AI is carefully analyzing your resume and job description...</div>
+                </div>
+              </div>
             )}
           </div>
         ) : (
           <div className="space-y-6 sm:space-y-8">
-            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Analysis Results</h1>
-              <Button onClick={() => setShowResults(false)} variant="outline" className="w-full sm:w-auto">
-                New Analysis
-              </Button>
-            </div>
+            <ScrollAnimation direction="up">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Analysis Results</h1>
+                <Button onClick={() => setShowResults(false)} variant="outline" className="w-full sm:w-auto">
+                  New Analysis
+                </Button>
+              </div>
+            </ScrollAnimation>
 
-            <AnalysisResults result={analysisResult} />
-            <JobListings jobs={jobListings} jobTitle={jobListingsTitle} />
+            <ScrollAnimation direction="up" delay={0.2}>
+              <AnalysisResults result={analysisResult} />
+            </ScrollAnimation>
+            
+            <ScrollAnimation direction="up" delay={0.4}>
+              <JobListings jobs={jobListings} jobTitle={jobListingsTitle} />
+            </ScrollAnimation>
           </div>
         )}
       </div>
