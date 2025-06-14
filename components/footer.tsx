@@ -39,7 +39,7 @@ export function Footer() {
               >
                 Feedback
               </a>
-              <Link href="#" className="text-sm text-gray-500 hover:text-blue-600">
+              <Link href="/about" className="text-sm text-gray-500 hover:text-blue-600">
                 About Us
               </Link>
             </div>
