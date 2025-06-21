@@ -31,7 +31,7 @@ export default function RankingPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
       </div>
     )
@@ -39,7 +39,7 @@ export default function RankingPage() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gradient-to-br from-white to-indigo-100">
         {/* Navigation */}
         <Navigation currentPage="ranking" />
 
@@ -55,7 +55,7 @@ export default function RankingPage() {
 
           <ScrollAnimation direction="up" delay={0.2}>
             <div className="text-center">
-              <Card className="bg-blue-50 border-blue-200">
+              <Card className="bg-white">
                 <CardHeader>
                   <CardTitle className="text-blue-800">Authentication Required</CardTitle>
                   <CardDescription>Please sign in to access the ranking features</CardDescription>
@@ -79,7 +79,7 @@ export default function RankingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       {/* Navigation */}
       <Navigation currentPage="ranking" />
 

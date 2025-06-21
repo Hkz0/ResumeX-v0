@@ -64,7 +64,7 @@ export default function AnalyzerPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       {/* Navigation */}
       <Navigation currentPage="analyzer" />
 
